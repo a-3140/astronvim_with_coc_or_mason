@@ -57,7 +57,7 @@ return {
                 -- not supported - https://github.com/neovim/neovim/pull/13654
                 documentColor = true,
                 documentFormatting = {
-                  defaultPrintWidth = 100,
+                  defaultPrintWidth = 80,
                 },
               },
             },

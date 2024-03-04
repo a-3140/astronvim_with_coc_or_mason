@@ -14,9 +14,11 @@ return {
     -- Configuration options for controlling formatting with language servers
     formatting = {
       -- control auto formatting on save
-      format_on_save = false,
+      format_on_save = {
+        enabled = true,
+      },
       -- disable formatting capabilities for specific language servers
-      disabled = {},
+      disabled = { "eslint", "volar" },
       -- default format timeout
       timeout_ms = 600000,
     },

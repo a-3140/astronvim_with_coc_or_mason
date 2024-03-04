@@ -184,8 +184,8 @@ function M.mappings(maps)
         "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
         desc = "Toggle comment line",
       }
-      maps.n["<Leader>/"] = false
-      maps.n["<Leader>/"] = false
+      -- maps.n["<Leader>/"] = false
+      -- maps.n["<Leader>/"] = false
     end
   end
 
@@ -288,7 +288,7 @@ function M.mappings(maps)
     if vim.fn.executable "lazydocker" == 1 then
       maps.n["<Leader>td"] = {
         require("utils").toggle_lazy_docker(),
-        desc = "ToggleTerm lazydocker"
+        desc = "ToggleTerm lazydocker",
       }
     end
   end

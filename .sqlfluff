@@ -2,8 +2,8 @@
 [sqlfluff]
 templater = jinja
 sql_file_exts = .sql,.sql.j2,.dml,.ddl
-dialect = mysql
-exclude_rules = ambiguous.column_count, structure.column_order, layout.indent
+dialect = postgres
+exclude_rules = ambiguous.column_count, structure.column_order
 fix_even_unparsable = True
 ignore = parsing
 output_line_length = 200

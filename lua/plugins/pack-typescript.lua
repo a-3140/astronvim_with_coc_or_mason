@@ -38,15 +38,22 @@ return {
               includeInlayFunctionLikeReturnTypeHints = true,
               includeInlayEnumMemberValueHints = true,
               includeCompletionsForModuleExports = true,
-              quotePreference = "auto",
+              quotePreference = "double",
             },
             tsserver_format_options = {
+              insertSpaceAfterOpeningAndBeforeClosingEmptyBraces = false,
+              -- insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis = false,
+              -- insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets = false,
+              -- insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces = false,
+              -- insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces = false,
+              -- insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces = false,
               allowIncompleteCompletions = false,
               allowRenameOfImportPath = false,
             },
             tsserver_plugins = {
               "@styled/typescript-styled-plugin",
               "typescript-vue-plugin",
+              "vue-typescript-plugin",
               -- "vue-component-meta",
             },
             expose_as_code_action = "all",
@@ -95,17 +102,24 @@ return {
           or util.root_has_file ".prettierrc.toml"
       end
 
+      opts.handlers.eslint_d = function()
+        local null_ls = require "null-ls"
+        null_ls.register(null_ls.builtins.code_actions.eslint_d.with { condition = has_eslint })
+        null_ls.register(null_ls.builtins.diagnostics.eslint_d.with { condition = has_eslint })
+        -- null_ls.register(null_ls.builtins.formatting.eslint_d.with { condition = has_eslint })
+      end
+
       opts.handlers.prettierd = function()
         local null_ls = require "null-ls"
         null_ls.register(null_ls.builtins.formatting.prettierd.with { condition = has_prettier })
       end
     end,
   },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    optional = true,
-    opts = function(_, opts) opts.ensure_installed = utils.list_insert_unique(opts.ensure_installed, { "js" }) end,
-  },
+  -- {
+  --   "jay-babu/mason-nvim-dap.nvim",
+  --   optional = true,
+  --   opts = function(_, opts) opts.ensure_installed = utils.list_insert_unique(opts.ensure_installed, "js") end,
+  -- },
   {
     "vuki656/package-info.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -118,7 +132,7 @@ return {
       "nvim-lua/plenary.nvim",
       "neovim/nvim-lspconfig",
     },
-    -- enabled = function() return not require("utils").is_vue_project() end,
+    enabled = function() return not require("utils").is_vue_project() end,
     ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     -- get AstroLSP provided options like `on_attach` and `capabilities`
     opts = function() return require("astrolsp").lsp_opts "typescript-tools" end,
@@ -128,48 +142,48 @@ return {
     cmd = { "TSC" },
     opts = {},
   },
-  {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    config = function()
-      local dap = require "dap"
-      dap.adapters["pwa-node"] = {
-        type = "server",
-        host = "localhost",
-        port = "${port}",
-        executable = {
-          command = "node",
-          args = {
-            require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-              .. "/js-debug/src/dapDebugServer.js",
-            "${port}",
-          },
-        },
-      }
-      local js_config = {
-        {
-          type = "pwa-node",
-          request = "launch",
-          name = "Launch file",
-          program = "${file}",
-          cwd = "${workspaceFolder}",
-        },
-        {
-          type = "pwa-node",
-          request = "attach",
-          name = "Attach",
-          processId = require("dap.utils").pick_process,
-          cwd = "${workspaceFolder}",
-        },
-      }
-
-      if not dap.configurations.javascript then
-        dap.configurations.javascript = js_config
-      else
-        utils.extend_tbl(dap.configurations.javascript, js_config)
-      end
-    end,
-  },
+  -- {
+  --   "mfussenegger/nvim-dap",
+  --   optional = true,
+  --   config = function()
+  --     local dap = require "dap"
+  --     dap.adapters["pwa-node"] = {
+  --       type = "server",
+  --       host = "localhost",
+  --       port = "${port}",
+  --       executable = {
+  --         command = "node",
+  --         args = {
+  --           require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+  --             .. "/js-debug/src/dapDebugServer.js",
+  --           "${port}",
+  --         },
+  --       },
+  --     }
+  --     local js_config = {
+  --       {
+  --         type = "pwa-node",
+  --         request = "launch",
+  --         name = "Launch file",
+  --         program = "${file}",
+  --         cwd = "${workspaceFolder}",
+  --       },
+  --       {
+  --         type = "pwa-node",
+  --         request = "attach",
+  --         name = "Attach",
+  --         processId = require("dap.utils").pick_process,
+  --         cwd = "${workspaceFolder}",
+  --       },
+  --     }
+  --
+  --     if not dap.configurations.javascript then
+  --       dap.configurations.javascript = js_config
+  --     else
+  --       utils.extend_tbl(dap.configurations.javascript, js_config)
+  --     end
+  --   end,
+  -- },
   {
     "bennypowers/template-literal-comments.nvim",
     ft = { "javascript", "typescript" },
