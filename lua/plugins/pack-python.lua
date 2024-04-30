@@ -9,10 +9,37 @@ return {
     "AstroNvim/astrolsp",
     ---@type AstroLSPOpts
     opts = {
-      servers = { "pylance" },
+      servers = { "pylsp" },
       ---@diagnostic disable: missing-fields
       config = {
-        pylance = {
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                mccabe = { enabled = false },
+                -- formatter options
+                black = { enabled = true },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                -- linter options
+                pylint = { enabled = true, executable = "pylint" },
+                ruff = { enabled = false },
+                pyflakes = { enabled = false },
+                pycodestyle = { enabled = false },
+                -- type checker
+                pylsp_mypy = {
+                  enabled = true,
+                  -- overrides = { "--python-executable", py_path, true },
+                  report_progress = true,
+                  live_mode = false
+                },
+                -- auto-completion options
+                jedi_completion = { fuzzy = true },
+                -- import sorting
+                isort = { enabled = true },
+              },
+            }
+          },
           on_attach = function(client, bufnr)
             if is_available "venv-selector.nvim" then
               set_mappings({
@@ -47,69 +74,8 @@ return {
                 "pyrightconfig.json",
               })(...)
           end,
-          cmd = { "pylance", "--stdio" },
           single_file_support = true,
           before_init = function(_, c) c.settings.python.pythonPath = vim.fn.exepath "python" end,
-          settings = {
-            python = {
-              analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "workspace",
-                typeCheckingMode = "basic",
-                autoImportCompletions = true,
-                completeFunctionParens = true,
-                indexing = true,
-                inlayHints = false,
-                stubPath = vim.fn.stdpath "data" .. "/lazy/python-type-stubs/stubs",
-                extraPaths = {
-                  vim.fn.stdpath "data" .. "/lazy/python-type-stubs/stubs",
-                  vim.fn.stdpath "data" .. "/lazy/pandas-stubs/pandas-stubs",
-                },
-                diagnosticSeverityOverrides = {
-                  reportUnusedImport = "information",
-                  reportUnusedFunction = "information",
-                  reportUnusedVariable = "information",
-                  reportGeneralTypeIssues = "none",
-                  reportOptionalMemberAccess = "none",
-                  reportOptionalSubscript = "none",
-                  reportPrivateImportUsage = "none",
-                },
-              },
-            },
-          },
-          handlers = {
-            ["workspace/executeCommand"] = function(_, result)
-              if result and result.label == "Extract Method" then
-                vim.ui.input({ prompt = "New name: ", default = result.data.newSymbolName }, function(input)
-                  if input and #input > 0 then vim.lsp.buf.rename(input) end
-                end)
-              end
-            end,
-          },
-          commands = {
-            PylanceExtractMethod = {
-              function()
-                local arguments =
-                  { vim.uri_from_bufnr(0):gsub("file://", ""), require("vim.lsp.util").make_given_range_params().range }
-                vim.lsp.buf.execute_command { command = "pylance.extractMethod", arguments = arguments }
-              end,
-              description = "Extract Method",
-              range = 2,
-            },
-            PylanceExtractVariable = {
-              function()
-                local arguments =
-                  { vim.uri_from_bufnr(0):gsub("file://", ""), require("vim.lsp.util").make_given_range_params().range }
-                vim.lsp.buf.execute_command { command = "pylance.extractVariable", arguments = arguments }
-              end,
-              description = "Extract Variable",
-              range = 2,
-            },
-          },
-          docs = {
-            description = "https://github.com/microsoft/pylance-release\n\n`pylance`, Fast, feature-rich language support for Python",
-          },
         },
       },
     },
@@ -127,7 +93,7 @@ return {
     "jay-babu/mason-null-ls.nvim",
     optional = true,
     opts = function(_, opts)
-      opts.ensure_installed = utils.list_insert_unique(opts.ensure_installed, { "black", "isort" })
+      opts.ensure_installed = utils.list_insert_unique(opts.ensure_installed, { "black", "isort", "mypy", "pylint" })
     end,
   },
   {
@@ -155,5 +121,5 @@ return {
       local path = require("mason-registry").get_package("debugpy"):get_install_path() .. "/venv/bin/python"
       require("dap-python").setup(path, opts)
     end,
-  },
+  }
 }
