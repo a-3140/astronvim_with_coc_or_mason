@@ -1,0 +1,2 @@
+return { 'olimorris/onedarkpro.nvim' }
+

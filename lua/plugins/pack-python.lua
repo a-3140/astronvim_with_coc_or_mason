@@ -102,6 +102,7 @@ return {
     opts = {
       anaconda_base_path = "~/miniconda3",
       anaconda_envs_path = "~/miniconda3/envs",
+      pyenv_path = "~/pyenv/",
       stay_on_this_version = true,
       dap_enabled = true,
       settings = {

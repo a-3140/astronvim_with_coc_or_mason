@@ -35,7 +35,9 @@ return {
     -- Configuration options for controlling formatting with language servers
     formatting = {
       -- control auto formatting on save
-      format_on_save = false,
+      format_on_save = {
+        enabled = true, -- enable or disable format on save
+      },
       -- disable formatting capabilities for specific language servers
       disabled = {},
       -- default format timeout

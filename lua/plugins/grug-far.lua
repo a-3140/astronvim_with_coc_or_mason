@@ -68,7 +68,7 @@ return {
         replace = { n = "<localleader>r" },
         qflist = { n = "<localleader>c" },
         syncLocations = { n = "<localleader>s" },
-        syncLine = { n = "<localleader>l" },
+        -- syncLine = { n = "<localleader>l" },
         close = { n = "q" },
         historyOpen = { n = "<localleader>t" },
         historyAdd = { n = "<localleader>a" },
