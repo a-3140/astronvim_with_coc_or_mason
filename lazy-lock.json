@@ -115,6 +115,7 @@
   "venv-selector.nvim": { "branch": "main", "commit": "f16c25bf16ac6e8bbdbcc9e9b3a1a00729d00c99" },
   "vim-dadbod": { "branch": "master", "commit": "fe5a55e92b2dded7c404006147ef97fb073d8b1b" },
   "vim-dadbod-completion": { "branch": "master", "commit": "880f7e9f2959e567c718d52550f9fae1aa07aa81" },
+  "vim-dadbod-ui": { "branch": "master", "commit": "f29c85ab42861c6ef683289b0c6a51e0d436dcf6" },
   "vim-illuminate": { "branch": "master", "commit": "5eeb7951fc630682c322e88a9bbdae5c224ff0aa" },
   "vim-maketable": { "branch": "master", "commit": "d72e73f333c64110524197ec637897bd1464830f" },
   "vim-visual-multi": { "branch": "master", "commit": "a6975e7c1ee157615bbc80fc25e4392f71c344d4" },

@@ -54,6 +54,11 @@ return {
       require("neotest").setup(opts)
     end,
     opts = {
+      discovery = {
+        enabled = false,
+        concurrent = 1,
+      },
+      running = { concurrent = true },
       status = { virtual_text = true },
       output = { open_on_run = true },
     },

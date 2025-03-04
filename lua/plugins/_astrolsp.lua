@@ -36,7 +36,7 @@ return {
     formatting = {
       -- control auto formatting on save
       format_on_save = {
-        enabled = true, -- enable or disable format on save
+        enabled = false, -- enable or disable format on save
       },
       -- disable formatting capabilities for specific language servers
       disabled = {},

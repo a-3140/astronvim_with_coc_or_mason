@@ -58,6 +58,16 @@ return {
                 useLibraryCodeForTypes = true,
                 reportMissingTypeStubs = false,
                 typeCheckingMode = "basic",
+                autoImportCompletions = true,
+                diagnosticSeverityOverrides = {
+                  reportUnusedImport = "information",
+                  reportUnusedFunction = "information",
+                  reportUnusedVariable = "information",
+                  reportGeneralTypeIssues = "none",
+                  reportOptionalMemberAccess = "none",
+                  reportOptionalSubscript = "none",
+                  reportPrivateImportUsage = "none",
+                },
               },
             },
           },
@@ -110,8 +120,23 @@ return {
           notify_user_on_venv_activation = true,
         },
       },
+      vim.api.nvim_create_autocmd("VimEnter", {
+        desc = "Auto select virtualenv Nvim open",
+        pattern = "*",
+        callback = function()
+          local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
+          if venv ~= "" then require("venv-selector").retrieve_from_cache() end
+        end,
+        once = true,
+      }),
     },
     cmd = { "VenvSelect", "VenvSelectCached" },
+    keys = {
+      -- Keymap to open VenvSelector to pick a venv.
+      { "<leader>vs", "<cmd>VenvSelect<cr>" },
+      -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
+      { "<leader>vc", "<cmd>VenvSelectCached<cr>" },
+    },
   },
   {
     "mfussenegger/nvim-dap-python",
